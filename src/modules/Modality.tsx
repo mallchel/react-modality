@@ -62,9 +62,9 @@ export const Modality = ({
                 }
 
                 const distanceToClosestStep = Math.abs(
-                    getYOffsetByStep(steps[matchClosestStepIndex]) - Math.abs(nextY)
+                    getYOffsetByStep(steps[matchClosestStepIndex]) - nextY
                 );
-                const distanceToCurrent = Math.abs(getYOffsetByStep(steps[currentIndex]) - Math.abs(nextY));
+                const distanceToCurrent = Math.abs(getYOffsetByStep(steps[currentIndex]) - nextY);
 
                 if (distanceToCurrent < distanceToClosestStep) {
                     matchClosestStepIndex = currentIndex;
