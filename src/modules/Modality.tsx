@@ -1,4 +1,4 @@
-import React, { useMemo, ReactChild, EventHandler, SyntheticEvent, useEffect } from 'react';
+import React, { useMemo, ReactNode, EventHandler, SyntheticEvent, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import PropTypes from 'prop-types';
 import { useSpring, animated } from 'react-spring';
@@ -11,23 +11,25 @@ let rect: DOMRect;
 const getYOffsetByStep = (rate: number) => window.innerHeight - window.innerHeight * rate;
 
 type ModalityType = {
-    children?: ReactChild;
-    visible?: boolean;
+    children: ReactNode;
+    visible: boolean;
     steps?: number[];
-    horOffsets?: string[];
+    stepsOffset?: string[];
     onClose: EventHandler<SyntheticEvent>;
 };
-export const Modality = ({
-    children,
-    visible,
-    steps = [0.2, 0.4, 0.95],
-    horOffsets = ['20px', '15px', '5px'],
-    onClose,
-}: ModalityType) => {
+export const Modality = (props: ModalityType) => {
+    const {
+        children,
+        visible = false,
+        steps = [0.2, 0.4, 0.95],
+        stepsOffset = ['20px', '15px', '5px'],
+        onClose,
+    } = props;
+
     let stopClickPropagation = false;
     const initialOffset = useMemo(() => getYOffsetByStep(steps[0]), [steps]);
-    const initialPositionConfig = useMemo(() => ({ y: initialOffset, left: horOffsets[0], right: horOffsets[0] }), [
-        horOffsets,
+    const initialPositionConfig = useMemo(() => ({ y: initialOffset, left: stepsOffset[0], right: stepsOffset[0] }), [
+        stepsOffset,
         initialOffset,
     ]);
     const [{ y, left, right }, set] = useSpring(() => ({
@@ -61,9 +63,7 @@ export const Modality = ({
                     return;
                 }
 
-                const distanceToClosestStep = Math.abs(
-                    getYOffsetByStep(steps[matchClosestStepIndex]) - nextY
-                );
+                const distanceToClosestStep = Math.abs(getYOffsetByStep(steps[matchClosestStepIndex]) - nextY);
                 const distanceToCurrent = Math.abs(getYOffsetByStep(steps[currentIndex]) - nextY);
 
                 if (distanceToCurrent < distanceToClosestStep) {
@@ -73,8 +73,8 @@ export const Modality = ({
 
             set({
                 y: getYOffsetByStep(steps[matchClosestStepIndex]),
-                left: horOffsets[matchClosestStepIndex],
-                right: horOffsets[matchClosestStepIndex],
+                left: stepsOffset[matchClosestStepIndex],
+                right: stepsOffset[matchClosestStepIndex],
             });
         }
     });
@@ -115,7 +115,7 @@ Modality.propTypes = {
     children: PropTypes.node,
     visible: PropTypes.bool,
     steps: PropTypes.arrayOf(PropTypes.number),
-    horOffsets: PropTypes.array,
+    stepsOffset: PropTypes.array,
     onClose: PropTypes.func,
     header: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
 };
