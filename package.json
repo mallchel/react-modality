@@ -29,7 +29,7 @@
         "@wessberg/rollup-plugin-ts": "^1.2.19",
         "react": "^16.13.0",
         "react-dom": "^16.13.0",
-        "react-scripts": "3.4.0",
+        "react-scripts": "^4.0.3",
         "react-spring": "^8.0.27",
         "react-use-gesture": "^7.0.4",
         "rimraf": "^3.0.2",
